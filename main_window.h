@@ -7,6 +7,8 @@
 #include <QPoint>
 #include <memory>
 #include <complex>
+#include <atomic>
+#include "image_cache.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -19,6 +21,8 @@ class main_window : public QMainWindow {
 Q_OBJECT
 
 public:
+
+    using complex = std::complex<double>;
     main_window(QWidget *parent = nullptr);
 
     ~main_window() override;
@@ -31,21 +35,20 @@ public:
 
     void mouseReleaseEvent(QMouseEvent *event) override;
 
-    QImage getImage(int x, int y);
+    QImage getImage(const complex & c);
 
     template<class T>
-    static void print(T & t , std::string str = "");
+    static void print(T && t , std::string str = "");
 
-private:
-
-    size_t value(int, int, int, int) const;
-
-    std::complex<double> center_offset;
+    int sub_image_size = 32;
     double scale = 0.005;
-    QPoint drag_pos;
+private:
+    size_t value(complex) const;
 
     std::unique_ptr<Ui::main_window> ui;
-
+    QPoint drag_pos;
+    std::complex<double> center_offset;
+    image_cache cache;
 };
 
 #endif // MAIN_WINDOW_H
