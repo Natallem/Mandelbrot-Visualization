@@ -1,9 +1,4 @@
-//
-// Created by lnv20 on 02.02.2021.
-//
-
 #include "image_cache.h"
-
 
 image_cache::image_cache(int sub_image_size, double scale, int thread_count) : scale(scale),
                                                                                worker(thread_count, sub_image_size) {

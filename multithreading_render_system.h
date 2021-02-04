@@ -19,12 +19,7 @@ public:
 
     sub_image *get_sub_image();
 
-    void close() {
-        closed = true;
-        std::lock_guard lock(m);
-        pq = std::priority_queue<img_pair, std::vector<img_pair>, std::greater<>>();
-        not_empty.notify_all();
-    }
+    void close();
 
     std::condition_variable not_empty;
     std::atomic<bool> closed = false;

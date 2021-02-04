@@ -6,10 +6,6 @@
 #include "sub_image.h"
 #include "multithreading_render_system.h"
 
-
-//#include <bits/stdc++.h>
-
-// A hash function used to hash a pair of any kind
 struct hash_pair {
     template<class T1, class T2>
     size_t operator()(const std::pair<T1, T2> &p) const {
@@ -24,7 +20,6 @@ public:
     using complex = std::complex<double>;
 
     ~image_cache() = default;
-
 
     image_cache(int sub_image_size, double scale, int thread_count);
 
