@@ -25,13 +25,11 @@ public:
 
     sub_image *get_sub_image(int x, int y);
 
-    void clean();
-
     size_t get_size();
 
-private:
+    void change_scale(double d);
 
-    double scale;
-    std::unordered_map<std::pair<int, int>, sub_image, hash_pair>  cache;
     multithreading_render_system worker;
+private:
+    std::unordered_map<std::pair<int, int>, sub_image, hash_pair> cache;
 };
