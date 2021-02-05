@@ -129,14 +129,14 @@ void main_window::wheelEvent(QWheelEvent *event) {
     double mul = -1;
     if (event->angleDelta().y() < 0)
         mul = 1;
-    double alpha = 0.1;
+    double alpha = 0.05;
     alpha = 1 + mul * alpha;
     double scale = cache.worker.queue.get_scale();
-    cache.change_scale(alpha);
     std::complex<double> x(event->position().x(), event->position().y());
     std::complex<double> offset_d(offset.real(), offset.imag());
     std::complex<double> betta = (x * scale * (1 - alpha) + offset_d * scale) / (offset_d * alpha * scale);
     offset *= betta;
+    cache.change_scale(alpha);
     update();
 }
 
