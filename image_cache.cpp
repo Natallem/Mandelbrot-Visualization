@@ -5,10 +5,10 @@ image_cache::image_cache(int sub_image_size, double scale, int thread_count) :
 
 }
 
-sub_image *image_cache::get_sub_image(int x, int y) {
+sub_image *image_cache::get_sub_image(double x, double y) {
     auto pair = cache.emplace(std::piecewise_construct,
                               std::forward_as_tuple(x, y),
-                              std::forward_as_tuple(complex(x, y)));
+                              std::forward_as_tuple(std::complex<double>(x, y)));
     if (pair.second) {
         worker.queue.add((*pair.first).second);
     }

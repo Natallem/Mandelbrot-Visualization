@@ -92,10 +92,10 @@ void multithreading_render_system::worker_proc() {
 }
 
 QImage multithreading_render_system::getImage(const complex &c, double scale, int step, int size) const {
-    assert(floor(abs(c.real())) == abs(c.real()));
-    assert(floor(abs(c.imag())) == abs(c.imag()));
-    assert(int(c.real()) % queue.sub_image_size == 0);
-    assert(int(c.imag()) % queue.sub_image_size == 0);
+//    assert(floor(abs(c.real())) == abs(c.real()));
+//    assert(floor(abs(c.imag())) == abs(c.imag()));
+//    assert(int(c.real()) % queue.sub_image_size == 0);
+//    assert(int(c.imag()) % queue.sub_image_size == 0);
     int h = size;
     int w = size;
     QImage img(w, h, QImage::Format_RGB888);
@@ -104,11 +104,7 @@ QImage multithreading_render_system::getImage(const complex &c, double scale, in
     for (int y = 0; y != h; ++y) {
         unsigned char *p = data + y * stride;
         for (int x = 0; x != w; ++x) {
-            auto tt = c + complex(x,y);
-            auto tt1 =c +  complex(x*step, y* step);
-            auto tt2 =scale * (c +  complex(x*step, y* step));
-
-            size_t color = value((c + complex(x * step, y * step)) * scale);
+            size_t color = value(c + (complex(x * step, y * step) * scale));
             *p++ = 0;
             *p++ = color;
             *p++ = color;

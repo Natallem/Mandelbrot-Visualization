@@ -23,7 +23,7 @@ public:
 
     image_cache(int sub_image_size, double scale, int thread_count);
 
-    sub_image *get_sub_image(int x, int y);
+    sub_image *get_sub_image(double x, double y);
 
     size_t get_size();
 
@@ -31,5 +31,5 @@ public:
 
     multithreading_render_system worker;
 private:
-    std::unordered_map<std::pair<int, int>, sub_image, hash_pair> cache;
+    std::unordered_map<std::pair<double,double>, sub_image, hash_pair> cache;
 };

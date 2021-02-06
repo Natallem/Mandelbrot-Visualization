@@ -20,7 +20,7 @@ class main_window : public QMainWindow {
     Q_OBJECT
 
 public:
-    using complex = std::complex<int>;
+    using complex = std::complex<double>;
     main_window(QWidget* parent = nullptr);
 
     ~main_window() override;
@@ -45,9 +45,10 @@ public:
 
 private:
     std::unique_ptr<Ui::main_window> ui;
+    double initial_scale = 0.005;
     QPoint drag_pos;
     complex offset;
-//    complex center;
+    std::complex<double> center;
     image_cache cache;
     bool is_pressed = false;
 };
