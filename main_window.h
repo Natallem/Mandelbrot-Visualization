@@ -33,8 +33,8 @@ public:
 
     void mouseReleaseEvent(QMouseEvent* event) override;
 
-    void resizeEvent(QResizeEvent* event) override;
-
+//    void resizeEvent(QResizeEvent* event) override;
+//
     void wheelEvent(QWheelEvent *event) override;
     template <class T>
     static void print(T&& t, std::string str = "");
@@ -51,6 +51,7 @@ private:
     std::complex<double> center;
     image_cache cache;
     bool is_pressed = false;
+//    uint64_t version;
 };
 
 #endif // MAIN_WINDOW_H

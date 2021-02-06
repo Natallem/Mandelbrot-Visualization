@@ -22,7 +22,7 @@ public:
 
     mutable std::mutex m;
     const complex vertex;
-private:
     QImage image;
+private:
 };
 
