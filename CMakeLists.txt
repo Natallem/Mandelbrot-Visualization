@@ -16,8 +16,9 @@ add_executable(${PROJECT_NAME}
         main_window.cpp
         main_window.ui
         main_window.h
-        multithreading_render_system.cpp
-        multithreading_render_system.h
+        render_system.cpp
+        render_system.h
+        image_queue.cpp
 #        image_queue.cpp
 #        image_queue.h
         sub_image.cpp sub_image.h image_cache.cpp image_cache.h)

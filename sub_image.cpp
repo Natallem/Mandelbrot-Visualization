@@ -19,5 +19,3 @@ sub_image::sub_image(const sub_image::complex &vertex) :
 QImage &sub_image::getImage() {
     return image;
 }
-
-

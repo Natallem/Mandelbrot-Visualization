@@ -8,12 +8,16 @@ sub_image *image_cache::get_sub_image(complex d) {
                               std::forward_as_tuple(d.real(), d.imag()),
                               std::forward_as_tuple(d));
     if (pair.second) {
-        worker.queue.add((*pair.first).second);
+        worker.get_queue().add((*pair.first).second);
     }
     return &(*pair.first).second;
 }
 
 void image_cache::change_scale(double d) {
-    worker.queue.change_scale(d);
+    worker.get_queue().change_scale(d);
     cache.clear();
+}
+
+double image_cache::get_cur_scale() {
+    return worker.get_queue().get_scale();
 }

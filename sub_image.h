@@ -16,7 +16,6 @@ public:
     void change_image(QImage &&new_image);
 
     QImage &getImage();
-
     mutable std::mutex m;
     const complex vertex;
     QImage image;

@@ -1,5 +1,4 @@
-#ifndef MAIN_WINDOW_H
-#define MAIN_WINDOW_H
+#pragma once
 
 #include "image_cache.h"
 #include <QMainWindow>
@@ -11,34 +10,29 @@
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-class main_window;
+    class main_window;
 }
 QT_END_NAMESPACE
 
 class main_window : public QMainWindow {
-    Q_OBJECT
+Q_OBJECT
 
-public:
+private:
     using complex = std::complex<double>;
-    main_window(QWidget* parent = nullptr);
+public:
+    explicit main_window(QWidget *parent = nullptr);
 
     ~main_window() override;
 
-    void mouseMoveEvent(QMouseEvent* event) override;
+    void paintEvent(QPaintEvent *) override;
 
-    void paintEvent(QPaintEvent*) override;
+    void mousePressEvent(QMouseEvent *event) override;
 
-    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
 
-    void mouseReleaseEvent(QMouseEvent* event) override;
-
-    void resizeEvent(QResizeEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
     void wheelEvent(QWheelEvent *event) override;
-
-    //todo delete
-    template <class T>
-    static void print(T&& t, std::string str = "");
 
 private:
     std::unique_ptr<Ui::main_window> ui;
@@ -51,4 +45,3 @@ private:
     QPoint drag_pos;
 };
 
-#endif // MAIN_WINDOW_H

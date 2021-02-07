@@ -4,7 +4,7 @@
 #include <map>
 #include <complex>
 #include "sub_image.h"
-#include "multithreading_render_system.h"
+#include "render_system.h"
 
 struct hash_pair {
     template<class T1, class T2>
@@ -16,18 +16,21 @@ struct hash_pair {
 };
 
 class image_cache {
-public:
+private:
     using complex = std::complex<double>;
-
-    ~image_cache() = default;
+public:
 
     image_cache(int sub_image_size, double scale, int thread_count);
+
+    ~image_cache() = default;
 
     sub_image *get_sub_image(complex d);
 
     void change_scale(double d);
 
-    multithreading_render_system worker;
+    double get_cur_scale();
+
 private:
+    render_system worker;
     std::unordered_map<std::pair<double,double>, sub_image, hash_pair> cache;
 };
