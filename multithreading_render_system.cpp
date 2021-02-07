@@ -63,10 +63,10 @@ void multithreading_render_system::worker_proc() {
         {
             std::lock_guard lock(queue.m);
             if (cur_version == queue.version) {
-               cur_size = cur_image->get_width();
+                cur_size = cur_image->get_width();
             }
         }
-        if (cur_size == -1  || cur_size == queue.sub_image_size){
+        if (cur_size == -1 || cur_size == queue.sub_image_size) {
             continue;
         }
         complex vertex;
@@ -115,10 +115,6 @@ QImage multithreading_render_system::getImage(const complex &c, double scale, in
 }
 
 size_t multithreading_render_system::value(complex point) {
-    if (point.imag() == 0 || point.real() == 0)
-        return 255;
-//    if (point.imag() == -1.)
-//        return 255;
     std::complex<double> z(0, 0);
     size_t const MAX_STEP = 255;
     for (size_t i = 1; i <= MAX_STEP; i++) {
@@ -130,16 +126,10 @@ size_t multithreading_render_system::value(complex point) {
     return 0;
 }
 
-multithreading_render_system::multithreading_render_system(size_t number_of_workers, int sub_image_size,double scale) :
-        queue(sub_image_size, scale)/*,
-        workers(number_of_workers)*/ {
+multithreading_render_system::multithreading_render_system(size_t number_of_workers, int sub_image_size, double scale) :
+        queue(sub_image_size, scale) {
     for (int i = 0; i < number_of_workers; i++)
         workers.emplace_back([this]() { worker_proc(); });
-    /*
-    for (auto &thr : workers) {
-        thr();
-    }
-    std::thread([this]() { worker_proc(); })*/
 }
 
 void multithreading_render_system::close() {

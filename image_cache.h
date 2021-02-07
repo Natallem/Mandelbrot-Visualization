@@ -23,9 +23,7 @@ public:
 
     image_cache(int sub_image_size, double scale, int thread_count);
 
-    sub_image *get_sub_image(double x, double y);
-
-    size_t get_size();
+    sub_image *get_sub_image(complex d);
 
     void change_scale(double d);
 

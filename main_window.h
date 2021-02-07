@@ -4,7 +4,6 @@
 #include "image_cache.h"
 #include <QMainWindow>
 #include <QPoint>
-#include <QSizePolicy>
 #include <QWidget>
 #include <atomic>
 #include <complex>
@@ -33,25 +32,23 @@ public:
 
     void mouseReleaseEvent(QMouseEvent* event) override;
 
-//    void resizeEvent(QResizeEvent* event) override;
-//
+    void resizeEvent(QResizeEvent* event) override;
+
     void wheelEvent(QWheelEvent *event) override;
+
+    //todo delete
     template <class T>
     static void print(T&& t, std::string str = "");
 
-    int sub_image_size = 32;
-//    double scale = 0.005;
-//    uint64_t version = 0;
-
 private:
     std::unique_ptr<Ui::main_window> ui;
+    int sub_image_size = 32;
     double initial_scale = 0.005;
-    QPoint drag_pos;
     complex offset;
-    std::complex<double> center;
     image_cache cache;
+    std::complex<double> center;
     bool is_pressed = false;
-//    uint64_t version;
+    QPoint drag_pos;
 };
 
 #endif // MAIN_WINDOW_H
