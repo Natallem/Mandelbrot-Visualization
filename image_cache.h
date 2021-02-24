@@ -30,7 +30,9 @@ public:
 
     double get_cur_scale();
 
+    void change_sub_image_size(int i);
+
 private:
-    render_system worker;
     std::unordered_map<std::pair<double,double>, sub_image, hash_pair> cache;
+    render_system renderer;
 };

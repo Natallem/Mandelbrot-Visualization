@@ -10,18 +10,19 @@ set(QT_VERSION 6)
 set(REQUIRED_LIBS Core Gui Widgets)
 set(REQUIRED_LIBS_QUALIFIED Qt6::Core Qt6::Gui Qt6::Widgets)
 
-
 add_executable(${PROJECT_NAME}
         main.cpp
-        main_window.cpp
         main_window.ui
         main_window.h
-        render_system.cpp
+        main_window.cpp
         render_system.h
+        render_system.cpp
         image_queue.cpp
-#        image_queue.cpp
-#        image_queue.h
-        sub_image.cpp sub_image.h image_cache.cpp image_cache.h)
+        sub_image.h
+        sub_image.cpp
+        image_cache.h
+        image_cache.cpp
+        )
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "

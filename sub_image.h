@@ -18,6 +18,7 @@ public:
     QImage &getImage();
     mutable std::mutex m;
     const complex vertex;
+//    std::vector<QImage> ready_images;
     QImage image;
 };
 

@@ -1,7 +1,7 @@
 QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++20
+CONFIG += c++2a
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -10,13 +10,14 @@ CONFIG += c++20
 SOURCES += \
     main.cpp \
     main_window.cpp \
-    multithreading_render_system.cpp \
+    render_system.cpp \
     sub_image.cpp \
+    image_queue.cpp \
     image_cache.cpp
 
 HEADERS += \
     main_window.h \
-    multithreading_render_system.h \
+    render_system.h \
     sub_image.h \
     image_cache.h
 
