@@ -16,7 +16,7 @@ public:
 
     void add(sub_image& img);
 
-    std::pair<sub_image*, uint64_t> get_sub_image();
+    void run_sub_image_creation();
 
     double get_scale() const;
 
@@ -50,11 +50,6 @@ private:
     using complex = std::complex<double>;
 
     void worker_proc();
-
-    QImage getImage(const complex& c, double scale, int step, int size, uint64_t cur_version);
-    //    static QImage getImage(const complex &c, double scale, int step, int size);
-
-    static size_t value(complex point);
 
     image_queue queue;
 

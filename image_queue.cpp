@@ -1,3 +1,4 @@
+#include <iostream>
 #include "render_system.h"
 
 image_queue::image_queue(int sub_image_size, double scale) : sub_image_size(sub_image_size), scale(scale) {}
@@ -8,7 +9,7 @@ void image_queue::add(sub_image &img) {
     not_empty.notify_all();
 }
 
-std::pair<sub_image *, uint64_t> image_queue::get_sub_image() {
+void image_queue::run_sub_image_creation() {
     std::unique_lock lg(queue_mutex);
     img_pair cur_pair = {-1, nullptr};
     not_empty.wait(lg, [&] {
@@ -23,13 +24,18 @@ std::pair<sub_image *, uint64_t> image_queue::get_sub_image() {
         return true;
     });
     if (closed) {
-        return {nullptr, version};
+        return;
     }
     int cur_size = cur_pair.second->get_width();
     if (cur_size != sub_image_size) {
         pq.push({cur_size * 2, cur_pair.second});
+    } else {
+        return;
     }
-    return {cur_pair.second, version};
+    ++cur_pair.second->working_threads;
+    uint64_t cur_version = version;
+    lg.unlock();
+    cur_pair.second->create_new_image(version, cur_version);
 }
 
 double image_queue::get_scale() const {
@@ -44,7 +50,7 @@ void image_queue::change_scale(double d) {
     pq = std::priority_queue<img_pair, std::vector<img_pair>, std::greater<>>();
 }
 
-void image_queue::change_sub_image_size(int new_sub_image_size){
+void image_queue::change_sub_image_size(int new_sub_image_size) {
     std::lock_guard lock(queue_mutex);
     ++version;
     sub_image_size = new_sub_image_size;

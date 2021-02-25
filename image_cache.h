@@ -24,15 +24,15 @@ public:
 
     ~image_cache() = default;
 
-    sub_image *get_sub_image(complex d);
+    sub_image *get_sub_image(complex d, int sub_image_degree);
 
     void change_scale(double d);
 
     double get_cur_scale();
 
     void change_sub_image_size(int i);
-
 private:
     std::unordered_map<std::pair<double,double>, sub_image, hash_pair> cache;
+
     render_system renderer;
 };

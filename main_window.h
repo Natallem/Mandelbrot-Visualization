@@ -10,39 +10,40 @@
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-class main_window;
+    class main_window;
 }
 QT_END_NAMESPACE
 
 class main_window : public QMainWindow {
-    Q_OBJECT
+Q_OBJECT
 
 private:
     using complex = std::complex<double>;
 
 public:
-    explicit main_window(QWidget* parent = nullptr);
+    explicit main_window(QWidget *parent = nullptr);
 
     ~main_window() override;
 
-    void paintEvent(QPaintEvent*) override;
+    void paintEvent(QPaintEvent *) override;
 
-    void mousePressEvent(QMouseEvent* event) override;
+    void mousePressEvent(QMouseEvent *event) override;
 
-    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
 
-    void mouseReleaseEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
-    void resizeEvent(QResizeEvent* event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
-    void wheelEvent(QWheelEvent* event) override;
+    void wheelEvent(QWheelEvent *event) override;
 
-    void changeEvent(QEvent* event) override;
+    void changeEvent(QEvent *event) override;
 
 private:
     std::unique_ptr<Ui::main_window> ui;
     const int detalization = 10;
-    int sub_image_size = 32;
+//    int sub_image_size = 32;
+    int sub_image_degree = 5;
     double initial_scale = 0.005;
     int prev_width;
     int prev_height;
@@ -56,7 +57,7 @@ private:
 
     void check_size_of_sub_images(bool forced = false);
 
-    void accept_sub_image_resize(int new_size);
+    void accept_sub_image_resize(int new_degree);
 
     void print(std::string s);
 };

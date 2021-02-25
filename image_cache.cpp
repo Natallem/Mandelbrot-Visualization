@@ -3,10 +3,10 @@
 image_cache::image_cache(int sub_image_size, double scale, int thread_count) :
         renderer(thread_count, sub_image_size, scale) {}
 
-sub_image *image_cache::get_sub_image(complex d) {
+sub_image *image_cache::get_sub_image(complex d, int sub_image_degree) {
     auto pair = cache.emplace(std::piecewise_construct,
                               std::forward_as_tuple(d.real(), d.imag()),
-                              std::forward_as_tuple(d));
+                              std::forward_as_tuple(d, sub_image_degree, renderer.get_queue().get_scale()));
     if (pair.second) {
         renderer.get_queue().add((*pair.first).second);
     }

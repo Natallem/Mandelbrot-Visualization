@@ -9,16 +9,30 @@ class sub_image {
 public:
     using complex = std::complex<double>;
 
-    explicit sub_image(const complex &vertex);
+    explicit sub_image(const complex &vertex, int sub_image_degree, double scale);
 
-    int get_width() const;
+    ~sub_image();
 
-    void change_image(QImage &&new_image);
+    QImage &get_ready_image();
 
-    QImage &getImage();
-    mutable std::mutex m;
+    int get_width();
+
+    size_t value(complex point);
+
+    void create_new_image(std::atomic<uint64_t> &queue_version, uint64_t cur_version);
+
+    std::atomic<size_t> working_threads = 0;
+    std::atomic<int> index_image = 0;
+private:
     const complex vertex;
-//    std::vector<QImage> ready_images;
-    QImage image;
+    size_t sub_image_degree;
+
+    double scale;
+    std::vector<QImage> ready_images;
+
+    void update_image(QImage &img, int step, int size, std::atomic<uint64_t> &queue_version, uint64_t cur_version);
+
+    void cas_index(int cur_sub_image_degree);
+
 };
 
