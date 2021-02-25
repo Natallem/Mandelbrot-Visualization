@@ -12,7 +12,7 @@ private:
     using img_pair = std::pair<int, sub_image*>;
 
 public:
-    image_queue(int sub_image_size, double scale);
+    image_queue(int sub_image_degree, double scale);
 
     void add(sub_image& img);
 
@@ -24,12 +24,12 @@ public:
 
     void close();
 
-    void change_sub_image_size(int new_sub_image_size);
+    void change_sub_image_degree(size_t new_sub_image_degree);
 
 private:
     std::condition_variable not_empty;
     std::atomic<bool> closed = false;
-    int sub_image_size;
+    size_t sub_image_degree;
     mutable std::mutex queue_mutex;
     std::atomic<uint64_t> version = 0;
     double scale;
@@ -40,7 +40,7 @@ private:
 
 class render_system {
 public:
-    render_system(int number_of_workers, int sub_image_size, double scale);
+    render_system(int number_of_workers, int sub_image_degree, double scale);
 
     ~render_system();
 

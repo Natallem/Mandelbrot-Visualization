@@ -41,8 +41,7 @@ public:
 
 private:
     std::unique_ptr<Ui::main_window> ui;
-    const int detalization = 10;
-//    int sub_image_size = 32;
+    const int detalization = 15;
     int sub_image_degree = 5;
     double initial_scale = 0.005;
     int prev_width;
@@ -58,6 +57,4 @@ private:
     void check_size_of_sub_images(bool forced = false);
 
     void accept_sub_image_resize(int new_degree);
-
-    void print(std::string s);
 };

@@ -20,17 +20,17 @@ private:
     using complex = std::complex<double>;
 public:
 
-    image_cache(int sub_image_size, double scale, int thread_count);
+    image_cache(int sub_image_degree, double scale, int thread_count);
 
     ~image_cache() = default;
 
-    sub_image *get_sub_image(complex d, int sub_image_degree);
+    sub_image *get_sub_image(complex d, size_t sub_image_degree);
 
     void change_scale(double d);
 
     double get_cur_scale();
 
-    void change_sub_image_size(int i);
+    void change_sub_image_degree(size_t i);
 private:
     std::unordered_map<std::pair<double,double>, sub_image, hash_pair> cache;
 

@@ -1,11 +1,10 @@
-#include <iostream>
 #include "render_system.h"
 
-image_queue::image_queue(int sub_image_size, double scale) : sub_image_size(sub_image_size), scale(scale) {}
+image_queue::image_queue(int sub_image_degree, double scale) : sub_image_degree(sub_image_degree), scale(scale) {}
 
 void image_queue::add(sub_image &img) {
     std::lock_guard lg(queue_mutex);
-    pq.push({img.get_width() * 2, &img});
+    pq.push({img.index_image +1, &img});
     not_empty.notify_all();
 }
 
@@ -26,16 +25,16 @@ void image_queue::run_sub_image_creation() {
     if (closed) {
         return;
     }
-    int cur_size = cur_pair.second->get_width();
-    if (cur_size != sub_image_size) {
-        pq.push({cur_size * 2, cur_pair.second});
-    } else {
+    int cur_degree = cur_pair.second->index_image;
+    if (cur_degree != sub_image_degree){
+        pq.push({cur_degree +1, cur_pair.second});
+    }else {
         return;
     }
     ++cur_pair.second->working_threads;
     uint64_t cur_version = version;
     lg.unlock();
-    cur_pair.second->create_new_image(version, cur_version);
+    cur_pair.second->render_sub_image(version, cur_version);
 }
 
 double image_queue::get_scale() const {
@@ -50,16 +49,17 @@ void image_queue::change_scale(double d) {
     pq = std::priority_queue<img_pair, std::vector<img_pair>, std::greater<>>();
 }
 
-void image_queue::change_sub_image_size(int new_sub_image_size) {
+void image_queue::change_sub_image_degree(size_t new_sub_image_degree) {
     std::lock_guard lock(queue_mutex);
     ++version;
-    sub_image_size = new_sub_image_size;
+    sub_image_degree = new_sub_image_degree;
     pq = std::priority_queue<img_pair, std::vector<img_pair>, std::greater<>>();
 }
 
 void image_queue::close() {
     std::lock_guard lock(queue_mutex);
     closed = true;
+    ++version;
     pq = std::priority_queue<img_pair, std::vector<img_pair>, std::greater<>>();
     not_empty.notify_all();
 }

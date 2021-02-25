@@ -6,15 +6,14 @@
 #include <QThread>
 #include <algorithm>
 #include <complex>
-#include <iostream>
 
 main_window::main_window(QWidget *parent)
         : QMainWindow(parent), ui(new Ui::main_window), prev_width(0), prev_height(0), offset(0, 0), cache(
         image_cache(
-                (1 << sub_image_degree),
+                 sub_image_degree,
                 initial_scale,
-                std::max(1, 1))) {
-//                std::max(1,QThread::idealThreadCount()))) {
+//                std::max(1, 1))) {
+                std::max(1,QThread::idealThreadCount()))) {
     ui->setupUi(this);
     this->setWindowTitle("Mandelbrot");
     center = -complex(width() / 2, height() / 2);
@@ -31,19 +30,19 @@ void main_window::paintEvent(QPaintEvent *ev) {
                   floor((double) offset.imag() / sub_image_size) * sub_image_size);
     shift -= offset;
     double scale = cache.get_cur_scale();
-    std::vector<std::pair<complex, sub_image *>> not_ready;
+    std::queue<std::pair<complex, sub_image *>> not_ready;
     bool need_retry = false;
     for (int y = 0; y <= height() + sub_image_size; y += sub_image_size) {
         for (int x = 0; x <= width() + sub_image_size; x += sub_image_size) {
             complex d(x, y);
             d += shift;
             sub_image *img = cache.get_sub_image((d + offset) * scale + center * initial_scale, sub_image_degree);
-            int size = img->get_width();
+            int size = img->get_size();
             if (!need_retry && size != sub_image_size) {
                 need_retry = true;
             }
             if (size == 1) {
-                not_ready.emplace_back(d, img);
+                not_ready.push({d, img});
                 continue;
             }
             auto ratiow = (double) sub_image_size / size;
@@ -51,11 +50,16 @@ void main_window::paintEvent(QPaintEvent *ev) {
             p.drawImage(0, 0, img->get_ready_image());
         }
     }
-    for (auto &pair : not_ready) {
-        auto[d, img] = pair;
-        auto size = img->get_width();
-        auto ratiow = (double) sub_image_size / size;
-        p.setTransform(QTransform(ratiow, 0, 0, ratiow, d.real(), d.imag()));
+    while (!not_ready.empty()){
+        auto[d,img] = not_ready.front();
+        not_ready.pop();
+        auto size = img->get_size();
+        if (size == 1){
+            not_ready.push({d,img});
+            continue;
+        }
+        auto ratio = (double) sub_image_size / size;
+        p.setTransform(QTransform(ratio, 0, 0, ratio, d.real(), d.imag()));
         p.drawImage(0, 0, img->get_ready_image());
     }
     if (need_retry) {
@@ -64,7 +68,6 @@ void main_window::paintEvent(QPaintEvent *ev) {
 }
 
 void main_window::mousePressEvent(QMouseEvent *event) {
-//    print("mousePressEvent");
     if (event->button() == Qt::LeftButton) {
         is_pressed = true;
         drag_pos = event->pos();
@@ -72,7 +75,6 @@ void main_window::mousePressEvent(QMouseEvent *event) {
 }
 
 void main_window::mouseMoveEvent(QMouseEvent *event) {
-//    print("mouseMoveEvent");
     if (event->buttons() & Qt::LeftButton && is_pressed) {
         QPoint diff = event->pos() - drag_pos;
         offset -= std::complex<double>(diff.x(), diff.y());
@@ -82,7 +84,6 @@ void main_window::mouseMoveEvent(QMouseEvent *event) {
 }
 
 void main_window::mouseReleaseEvent(QMouseEvent *event) {
-//    print("changeEvent");
     if (event->button() == Qt::LeftButton) {
         is_pressed = false;
         QPoint diff = event->pos() - drag_pos;
@@ -92,7 +93,6 @@ void main_window::mouseReleaseEvent(QMouseEvent *event) {
 }
 
 void main_window::wheelEvent(QWheelEvent *event) {
-//    print("wheelEvent");
     double mul = -1;
     if (event->angleDelta().y() < 0) {
         mul = 1;
@@ -110,7 +110,6 @@ void main_window::wheelEvent(QWheelEvent *event) {
 }
 
 void main_window::resizeEvent(QResizeEvent *event) {
-    print("changeEvent");
     check_size_of_sub_images();
     update();
 }
@@ -118,15 +117,9 @@ void main_window::resizeEvent(QResizeEvent *event) {
 void main_window::changeEvent(QEvent *event) {
     if (event->type() == QEvent::WindowStateChange) {
         if (this->isMaximized()) {
-            print("changeEvent");
             check_size_of_sub_images();
         }
     }
-}
-
-void main_window::print(std::string s) {
-    std::cout << s << "\n";
-    std::cout.flush();
 }
 
 void main_window::check_size_of_sub_images(bool forced) {
@@ -154,7 +147,7 @@ void main_window::check_size_of_sub_images(bool forced) {
 
 void main_window::accept_sub_image_resize(int new_degree) {
     sub_image_degree = new_degree;
-    cache.change_sub_image_size(1 << new_degree);
+    cache.change_sub_image_degree(new_degree);
     prev_height = height();
     prev_width = width();
 }
