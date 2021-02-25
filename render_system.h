@@ -44,7 +44,7 @@ public:
 
     ~render_system();
 
-    image_queue& get_queue();
+    image_queue& get_queue() const;
 
 private:
     using complex = std::complex<double>;

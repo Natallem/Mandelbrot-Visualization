@@ -24,7 +24,7 @@ render_system::~render_system()
     }
 }
 
-image_queue& render_system::get_queue()
+image_queue& render_system::get_queue() const
 {
     return queue;
 }

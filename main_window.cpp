@@ -12,15 +12,12 @@ main_window::main_window(QWidget *parent)
         image_cache(
                  sub_image_degree,
                 initial_scale,
-//                std::max(1, 1))) {
                 std::max(1,QThread::idealThreadCount()))) {
     ui->setupUi(this);
     this->setWindowTitle("Mandelbrot");
     center = -complex(width() / 2, height() / 2);
     check_size_of_sub_images(true);
 }
-
-main_window::~main_window() = default;
 
 void main_window::paintEvent(QPaintEvent *ev) {
     QMainWindow::paintEvent(ev);
@@ -45,8 +42,8 @@ void main_window::paintEvent(QPaintEvent *ev) {
                 not_ready.push({d, img});
                 continue;
             }
-            auto ratiow = (double) sub_image_size / size;
-            p.setTransform(QTransform(ratiow, 0, 0, ratiow, d.real(), d.imag()));
+            auto ratio = (double) sub_image_size / size;
+            p.setTransform(QTransform(ratio, 0, 0, ratio, d.real(), d.imag()));
             p.drawImage(0, 0, img->get_ready_image());
         }
     }

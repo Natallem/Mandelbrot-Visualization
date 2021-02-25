@@ -23,7 +23,7 @@ private:
 public:
     explicit main_window(QWidget *parent = nullptr);
 
-    ~main_window() override;
+    ~main_window() override = default;
 
     void paintEvent(QPaintEvent *) override;
 

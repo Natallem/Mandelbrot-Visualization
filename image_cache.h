@@ -11,7 +11,7 @@ struct hash_pair {
     size_t operator()(const std::pair<T1, T2> &p) const {
         auto hash1 = std::hash<T1>{}(p.first);
         auto hash2 = std::hash<T2>{}(p.second);
-        return hash1 ^ hash2;
+        return hash1 ^ (hash2 % 243325343453555);
     }
 };
 
@@ -28,7 +28,7 @@ public:
 
     void change_scale(double d);
 
-    double get_cur_scale();
+    [[nodiscard]] double get_cur_scale()const ;
 
     void change_sub_image_degree(size_t i);
 private:
