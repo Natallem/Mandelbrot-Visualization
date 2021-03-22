@@ -22,13 +22,13 @@ for faster rendering and cached data for already rendered pieces of the coordina
 ##Some screenshots
 
 #### Initial screen
-![Hello](./images/init_screen.png)
+![Hello](screenshots/init_screen.png)
 
 #### Example #1
-![Hello](./images/pic_1.png)
+![Hello](screenshots/pic_1.png)
 
 #### Example #2
-![Hello](./images/pic_2.png)
+![Hello](screenshots/pic_2.png)
 
 #### Example #3
-![Hello](./images/pic_3.png)
+![Hello](screenshots/pic_3.png)
