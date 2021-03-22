@@ -18,7 +18,7 @@ void image_cache::change_scale(double d) {
     cache.clear();
 }
 
-double image_cache::get_cur_scale() const {
+double image_cache::get_cur_scale() {
     return renderer.get_queue().get_scale();
 }
 

@@ -1,4 +1,4 @@
-#include "render_system.h"
+#include "image_queue.h"
 
 image_queue::image_queue(int sub_image_degree, double scale) : sub_image_degree(sub_image_degree), scale(scale) {}
 

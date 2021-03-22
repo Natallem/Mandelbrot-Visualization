@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
-project(Qt-Mandelbrot)
+project(Mandelbrot)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
@@ -22,7 +22,8 @@ add_executable(${PROJECT_NAME}
         sub_image.cpp
         image_cache.h
         image_cache.cpp
-        )
+        image_queue.h
+        configuration.h)
 
 if (NOT CMAKE_PREFIX_PATH)
     message(WARNING "CMAKE_PREFIX_PATH is not defined, you may need to set it "

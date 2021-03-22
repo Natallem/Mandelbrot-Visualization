@@ -1,18 +1,15 @@
 #include "main_window.h"
 
-#include "ui_main_window.h"
 #include <QMouseEvent>
 #include <QPainter>
 #include <QThread>
-#include <algorithm>
-#include <complex>
 
 main_window::main_window(QWidget *parent)
         : QMainWindow(parent), ui(new Ui::main_window), prev_width(0), prev_height(0), offset(0, 0), cache(
         image_cache(
-                 sub_image_degree,
+                sub_image_degree,
                 initial_scale,
-                std::max(1,QThread::idealThreadCount()))) {
+                std::max(1, QThread::idealThreadCount()))) {
     ui->setupUi(this);
     this->setWindowTitle("Mandelbrot");
     center = -complex(width() / 2, height() / 2);
@@ -23,8 +20,8 @@ void main_window::paintEvent(QPaintEvent *ev) {
     QMainWindow::paintEvent(ev);
     QPainter p(this);
     int sub_image_size = (1 << sub_image_degree);
-    complex shift(floor((double) offset.real() / sub_image_size) * sub_image_size,
-                  floor((double) offset.imag() / sub_image_size) * sub_image_size);
+    complex shift(floor((precise_t) offset.real() / sub_image_size) * sub_image_size,
+                  floor((precise_t) offset.imag() / sub_image_size) * sub_image_size);
     shift -= offset;
     double scale = cache.get_cur_scale();
     std::queue<std::pair<complex, sub_image *>> not_ready;
@@ -42,17 +39,17 @@ void main_window::paintEvent(QPaintEvent *ev) {
                 not_ready.push({d, img});
                 continue;
             }
-            auto ratio = (double) sub_image_size / size;
+            auto ratio= (double) sub_image_size / size;
             p.setTransform(QTransform(ratio, 0, 0, ratio, d.real(), d.imag()));
             p.drawImage(0, 0, img->get_ready_image());
         }
     }
-    while (!not_ready.empty()){
-        auto[d,img] = not_ready.front();
+    while (!not_ready.empty()) {
+        auto[d, img] = not_ready.front();
         not_ready.pop();
         auto size = img->get_size();
-        if (size == 1){
-            not_ready.push({d,img});
+        if (size == 1) {
+            not_ready.push({d, img});
             continue;
         }
         auto ratio = (double) sub_image_size / size;
@@ -74,7 +71,7 @@ void main_window::mousePressEvent(QMouseEvent *event) {
 void main_window::mouseMoveEvent(QMouseEvent *event) {
     if (event->buttons() & Qt::LeftButton && is_pressed) {
         QPoint diff = event->pos() - drag_pos;
-        offset -= std::complex<double>(diff.x(), diff.y());
+        offset -= complex(diff.x(), diff.y());
         drag_pos = event->pos();
         update();
     }
@@ -84,7 +81,7 @@ void main_window::mouseReleaseEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         is_pressed = false;
         QPoint diff = event->pos() - drag_pos;
-        offset -= std::complex<double>(diff.x(), diff.y());
+        offset -= complex(diff.x(), diff.y());
         update();
     }
 }
@@ -100,7 +97,7 @@ void main_window::wheelEvent(QWheelEvent *event) {
     cache.change_scale(scale_mul);
     check_size_of_sub_images(true);
     double new_scale = cache.get_cur_scale();
-    std::complex<double> x(event->position().x(), event->position().y());
+    complex x(event->position().x(), event->position().y());
     center = ((x + offset) * prev_scale + center * initial_scale - new_scale * x) / initial_scale;
     offset = complex(0, 0);
     update();
@@ -122,7 +119,7 @@ void main_window::changeEvent(QEvent *event) {
 void main_window::check_size_of_sub_images(bool forced) {
     if (width() == prev_width && height() == prev_height)
         return;
-    int min_sub_image_size = std::max(width(), height()) / detalization;
+    int min_sub_image_size = std::max(width(), height()) / granularity;
     int new_size = 1;
     int new_degree = 0;
     while (new_size < min_sub_image_size) {
