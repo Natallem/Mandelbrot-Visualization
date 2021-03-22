@@ -66,8 +66,8 @@ void sub_image::update_QImage(QImage &img, size_t step, size_t size, std::atomic
                 return;
             }
             size_t color = color_value(vertex + (complex(x * step, y * step) * scale));
-            *p++ = 0;
-            *p++ = color;
+            *p++ =  0;
+            *p++ = color * 0.7;
             *p++ = color;
         }
     }
