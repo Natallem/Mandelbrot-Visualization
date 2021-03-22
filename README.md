@@ -18,3 +18,6 @@ for faster rendering and cached data for already rendered pieces of the coordina
 * Divide window space in pieces and multithreaded calculate each piece of coordinate plane.
 * Use cache for already calculated pieces, if scale haven't changed. 
 * Can adapt to size of screen by calculating optimal pieces size, that affect minimal granularity for the first moments of rendering new image.
+
+
+![GitHub Logo](./images/Screenshot_1.png)
