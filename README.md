@@ -19,7 +19,7 @@ for faster rendering and cached data for already rendered pieces of the coordina
 * Use cache for already calculated pieces, if scale haven't changed. 
 * Can adapt to size of screen by calculating optimal pieces size, that affect minimal granularity for the first moments of rendering new image.
 
-##Some screenshots
+## Some screenshots
 
 #### Initial screen
 ![Hello](screenshots/init_screen.png)
