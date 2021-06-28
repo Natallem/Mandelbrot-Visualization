@@ -14,7 +14,7 @@ for faster rendering and cached data for already rendered pieces of the coordina
 * __cmake__ with Qt6 and `CMakeLists.txt`
     > To run with __cmake__ in __CLion__ do not forget to set _-DCMAKE_PREFIX_PATH=<path_to_your_Qt6_cmake_dir>_ in `File | Settings | Build, Execution, Deployment | CMake | CMake options`  
 
-*(Example: -DCMAKE_PREFIX_PATH=A:\ProgramFiles\Qt\6.0.1\mingw81_64\lib\cmake)*
+    > *(Example: -DCMAKE_PREFIX_PATH=A:\ProgramFiles\Qt\6.0.1\mingw81_64\lib\cmake)*
 
 ## Optimizations
 * Divide window space in pieces and multithreaded calculate each piece of coordinate plane.
